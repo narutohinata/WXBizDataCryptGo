@@ -56,10 +56,7 @@ func (crpyt *WXBizDataCrypt) DecryptData(encryptedData string, iv string) (*WxDa
 	}
 	mode := cipher.NewCBCDecrypter(block, _iv)
 	mode.CryptBlocks(_encryptedData, _encryptedData)
-	fmt.Println(string(PKCS7UnPadding(_encryptedData)))
-
 	data := WxData{}
-
 	err = json.Unmarshal(PKCS7UnPadding(_encryptedData), &data)
 	if err != nil {
 		panic(err)
