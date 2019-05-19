@@ -5,7 +5,7 @@ import (
 	"crypto/cipher"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
+	"github.com/pkg/errors"
 )
 
 type WXBizDataCrypt struct {
@@ -30,13 +30,6 @@ type WaterMark struct {
 	AppId string `json:"appid"`
 }
 
-type WXBizDataCryptError struct {
-	message string
-}
-
-func (e WXBizDataCryptError) Error() string{
-	return fmt.Sprintf("has a error: %v", e.message)
-}
 
 func NewWXBizDataCrypt(appId, sessionKey string) *WXBizDataCrypt {
 	return &WXBizDataCrypt{
@@ -63,7 +56,7 @@ func (crpyt *WXBizDataCrypt) DecryptData(encryptedData string, iv string) (*WxDa
 	}
 
 	if data.WaterMark.AppId != crpyt.AppId {
-		return nil, WXBizDataCryptError{"Invalid Buffer"}
+		return nil, errors.New("Invalid Buffer")
 	}
 
 
